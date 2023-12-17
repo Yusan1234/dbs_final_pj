@@ -7,6 +7,37 @@ import xgboost as xgb
 model_init = xgb.Booster()
 model_init.load_model("model.json")
 
+from dotenv import load_dotenv
+from model import ConnectionSettings, AzureDbConnection
+load_dotenv()
+
+import os
+
+SERVER = os.getenv('SERVER')
+DATABASE = os.getenv('DATABASE')
+USER = os.getenv('USER')
+PASSWORD = os.getenv('PASSWORD')
+DRIVER = os.getenv('DRIVER')
+
+conn_settings = ConnectionSettings(
+    server=SERVER, 
+    database=DATABASE, 
+    username=USER, 
+    password=PASSWORD,
+    driver=DRIVER)
+
+
+db_conn = AzureDbConnection(conn_settings)
+db_conn.connect()
+
+
+try:
+    for t in db_conn.get_tables():
+        print(t)
+    # Do another DB-related stuff:
+    # ...
+finally:
+    db_conn.dispose()
 
 st.title('DB Final Project part 4')
 ###
