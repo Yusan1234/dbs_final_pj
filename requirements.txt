@@ -1,0 +1,24 @@
+# Pinned dependencies that cause breakage
+Werkzeug==2.3.3
+SQLAlchemy==2.0.0
+
+# Runtime dependencies
+Flask==2.3.2
+flask-restx==1.1.0
+Flask-SQLAlchemy==3.0.2
+psycopg[binary]==3.1.12
+python-dotenv==0.21.1
+pyodbc
+
+# Runtime tools
+gunicorn==20.1.0
+honcho==1.1.0
+
+# Main
+scikit-learn==1.3.2
+streamlit
+pandas
+xgboost
+
+# Utilities
+httpie==3.2.1
