@@ -92,7 +92,9 @@ RUN source ~/.bashrc
 
 WORKDIR /app
 COPY app.py ./
-COPY test.py ./
+COPY model.py ./
 COPY model.json ./
+COPY ml.py ./
+COPY .env ./
 
 CMD [ "/bin/bash" ]
