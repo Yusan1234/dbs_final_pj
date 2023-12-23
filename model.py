@@ -4,6 +4,7 @@ from pandas import DataFrame
 from sqlalchemy import create_engine, inspect
 from sqlalchemy.orm import Session
 import urllib
+import datetime
 
 from sqlalchemy import Column
 from sqlalchemy import ForeignKey
@@ -81,47 +82,46 @@ class AzureDbConnection:
         """Dispose opened connections."""
         self.conn.close()
         self.db.dispose()
-        
 
-class Credit(Base):
-    __tablename__ = "Credit"
+# class Credit(Base):
+#     __tablename__ = "Credit"
     
-    Id: Mapped[int] = mapped_column(primary_key=True, autoincrement=False)
-    Job: Mapped[int] = mapped_column()
-    Housing: Mapped[str] = mapped_column()
-    SavingAccounts: Mapped[str] = mapped_column()
-    CheckingAccount: Mapped[str] = mapped_column()
-    CreditAmount: Mapped[str] = mapped_column()
-    Duration: Mapped[int] = mapped_column()
-    Purpose: Mapped[str] = mapped_column()
+#     Id: Mapped[int] = mapped_column(primary_key=True, autoincrement=False)
+#     Job: Mapped[int] = mapped_column()
+#     Housing: Mapped[str] = mapped_column()
+#     SavingAccounts: Mapped[str] = mapped_column()
+#     CheckingAccount: Mapped[str] = mapped_column()
+#     CreditAmount: Mapped[str] = mapped_column()
+#     Duration: Mapped[int] = mapped_column()
+#     Purpose: Mapped[str] = mapped_column()
 
-class Heart(Base):
-    __tablename__ = "Heart"
+# class Heart(Base):
+#     __tablename__ = "Heart"
     
-    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=False)
-    age: Mapped[int] = mapped_column()
-    sex: Mapped[str] = mapped_column()
-    dataset: Mapped[str] = mapped_column()
-    cp: Mapped[str] = mapped_column()
-    trestbps: Mapped[float] = mapped_column()
-    chol: Mapped[float] = mapped_column()
-    fbs: Mapped[bool] = mapped_column()
-    restecg: Mapped[str] = mapped_column()
-    thalch: Mapped[float] = mapped_column()
-    exang: Mapped[bool] = mapped_column()
-    oldpeak: Mapped[float] = mapped_column()
-    slope: Mapped[str] = mapped_column()
-    ca: Mapped[float] = mapped_column()
-    thal: Mapped[str] = mapped_column()
-    num: Mapped[int] = mapped_column()
+#     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=False)
+#     age: Mapped[int] = mapped_column()
+#     sex: Mapped[str] = mapped_column()
+#     dataset: Mapped[str] = mapped_column()
+#     cp: Mapped[str] = mapped_column()
+#     trestbps: Mapped[float] = mapped_column()
+#     chol: Mapped[float] = mapped_column()
+#     fbs: Mapped[bool] = mapped_column()
+#     restecg: Mapped[str] = mapped_column()
+#     thalch: Mapped[float] = mapped_column()
+#     exang: Mapped[bool] = mapped_column()
+#     oldpeak: Mapped[float] = mapped_column()
+#     slope: Mapped[str] = mapped_column()
+#     ca: Mapped[float] = mapped_column()
+#     thal: Mapped[str] = mapped_column()
+#     num: Mapped[int] = mapped_column()
 
-class Insurance(Base):
-    __tablename__ = "Insurance"
+# class Insurance(Base):
+#     __tablename__ = "Insurance"
     
-    Id: Mapped[int] = mapped_column(primary_key=True, autoincrement=False)
-    bmi: Mapped[float] = mapped_column()
-    children: Mapped[int] = mapped_column()
-    smoker: Mapped[str] = mapped_column()
-    region: Mapped[str] = mapped_column()
-    charges: Mapped[float] = mapped_column()
+#     Id: Mapped[int] = mapped_column(primary_key=True, autoincrement=False)
+#     bmi: Mapped[float] = mapped_column()
+#     children: Mapped[int] = mapped_column()
+#     smoker: Mapped[str] = mapped_column()
+#     region: Mapped[str] = mapped_column()
+#     charges: Mapped[float] = mapped_column()
 

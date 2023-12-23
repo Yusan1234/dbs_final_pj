@@ -5,10 +5,10 @@ class MLModel:
     def __init__(self):
         self.model = xgb.XGBClassifier()
     
-    def preprocess(self, data:dict):
-        
+    def preprocess(self, df):
+
         self.model.load_model('model.json')
-        df = pd.DataFrame(data, index=[0])
+        # df = pd.DataFrame(data, index=[0])
         df = df.rename(columns={'SavingAccounts':'Saving accounts', 'CheckingAccount':'Checking account', 'CreditAmount':'Credit amount'})
         cat_cols = []
         for c, v in zip(df.columns, df.dtypes):
@@ -21,6 +21,8 @@ class MLModel:
         
         self.tr = df.drop('num', axis=1)
         self.te = df['num']
+        self.te_id = df['id']
+        
     def preprocess_retrain(self, df):
         df = df.rename(columns={'SavingAccounts':'Saving accounts', 'CheckingAccount':'Checking account', 'CreditAmount':'Credit amount'})
         cat_cols = []
@@ -33,6 +35,7 @@ class MLModel:
         df = df.dropna(subset=['num'])
         self.tr = df.drop('num', axis=1)
         self.te = df['num']
+        
         
     def retrain(self):
         params = {
@@ -52,14 +55,15 @@ class MLModel:
         if os.path.exists('model.json'):
             cmd = 'sudo rm model.json'
             os.system(cmd)
-        model.save_model("model.json")
+        model.save_model('model.json')
 
     def prediction(self):
         pred = self.model.predict(self.tr)
-        if pred[0]==0:
-            self.res = 'Health'
-        else:
-            self.res = 'Potential Heart Disease'
-        return self.res, pred[0]
+        data = []
+        for p,  i in zip(pred, self.te_id):
+            data.append([p, i])
+        pred_df = pd.DataFrame(data=data, columns=['pred', 'id'])
+
+        return pred_df
     
         
