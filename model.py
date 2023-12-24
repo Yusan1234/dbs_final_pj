@@ -83,45 +83,58 @@ class AzureDbConnection:
         self.conn.close()
         self.db.dispose()
 
-# class Credit(Base):
-#     __tablename__ = "Credit"
+class Account(Base):
+    __tablename__ = "Account"
     
-#     Id: Mapped[int] = mapped_column(primary_key=True, autoincrement=False)
-#     Job: Mapped[int] = mapped_column()
-#     Housing: Mapped[str] = mapped_column()
-#     SavingAccounts: Mapped[str] = mapped_column()
-#     CheckingAccount: Mapped[str] = mapped_column()
-#     CreditAmount: Mapped[str] = mapped_column()
-#     Duration: Mapped[int] = mapped_column()
-#     Purpose: Mapped[str] = mapped_column()
+    AccountID: Mapped[str] = mapped_column(primary_key=True, autoincrement=False)
+    AccountName: Mapped[str] = mapped_column()
+    AccountName2: Mapped[str] = mapped_column()
+    LocationAddress1: Mapped[str] = mapped_column()
+    LocationAddress2: Mapped[str] = mapped_column()
+    LocationCity: Mapped[str] = mapped_column()
+    LocationState: Mapped[str] = mapped_column()
+    LocationZip: Mapped[int] = mapped_column()
 
-# class Heart(Base):
-#     __tablename__ = "Heart"
-    
-#     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=False)
-#     age: Mapped[int] = mapped_column()
-#     sex: Mapped[str] = mapped_column()
-#     dataset: Mapped[str] = mapped_column()
-#     cp: Mapped[str] = mapped_column()
-#     trestbps: Mapped[float] = mapped_column()
-#     chol: Mapped[float] = mapped_column()
-#     fbs: Mapped[bool] = mapped_column()
-#     restecg: Mapped[str] = mapped_column()
-#     thalch: Mapped[float] = mapped_column()
-#     exang: Mapped[bool] = mapped_column()
-#     oldpeak: Mapped[float] = mapped_column()
-#     slope: Mapped[str] = mapped_column()
-#     ca: Mapped[float] = mapped_column()
-#     thal: Mapped[str] = mapped_column()
-#     num: Mapped[int] = mapped_column()
 
-# class Insurance(Base):
-#     __tablename__ = "Insurance"
+class Credit(Base):
+    __tablename__ = "Credit"
     
-#     Id: Mapped[int] = mapped_column(primary_key=True, autoincrement=False)
-#     bmi: Mapped[float] = mapped_column()
-#     children: Mapped[int] = mapped_column()
-#     smoker: Mapped[str] = mapped_column()
-#     region: Mapped[str] = mapped_column()
-#     charges: Mapped[float] = mapped_column()
+    Id: Mapped[int] = mapped_column(primary_key=True, autoincrement=False)
+    Job: Mapped[int] = mapped_column()
+    Housing: Mapped[str] = mapped_column()
+    SavingAccounts: Mapped[str] = mapped_column()
+    CheckingAccount: Mapped[str] = mapped_column()
+    CreditAmount: Mapped[str] = mapped_column()
+    Duration: Mapped[int] = mapped_column()
+    Purpose: Mapped[str] = mapped_column()
+
+class Heart(Base):
+    __tablename__ = "Heart"
+    
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=False)
+    age: Mapped[int] = mapped_column()
+    sex: Mapped[str] = mapped_column()
+    dataset: Mapped[str] = mapped_column()
+    cp: Mapped[str] = mapped_column()
+    trestbps: Mapped[float] = mapped_column()
+    chol: Mapped[float] = mapped_column()
+    fbs: Mapped[bool] = mapped_column()
+    restecg: Mapped[str] = mapped_column()
+    thalch: Mapped[float] = mapped_column()
+    exang: Mapped[bool] = mapped_column()
+    oldpeak: Mapped[float] = mapped_column()
+    slope: Mapped[str] = mapped_column()
+    ca: Mapped[float] = mapped_column()
+    thal: Mapped[str] = mapped_column()
+    num: Mapped[int] = mapped_column()
+
+class Insurance(Base):
+    __tablename__ = "Insurance"
+    
+    Id: Mapped[int] = mapped_column(primary_key=True, autoincrement=False)
+    bmi: Mapped[float] = mapped_column()
+    children: Mapped[int] = mapped_column()
+    smoker: Mapped[str] = mapped_column()
+    region: Mapped[str] = mapped_column()
+    charges: Mapped[float] = mapped_column()
 

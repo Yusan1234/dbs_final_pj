@@ -83,12 +83,16 @@ if st.button("Upload", type="primary"):
         if target=='Account':
             Account = Base.classes.Account
             h = pd.read_sql(sql="select * from Account", con=db_conn.engine())
-            start_id = h.shape[0]+1
+            AList = h['AccountID'].to_list()
             for i, val in df.iterrows():# df shape
-                account_i = Account(AccountID=start_id, AccountName=val['AccountName'], AccountName2=val['AccountName2'], 
+                if str(val['AccountID']) in AList:
+                    continue
+                print(val)
+                print(AList)
+                account_i = Account(AccountID=val['AccountID'], AccountName=val['AccountName'], AccountName2=val['AccountName2'], 
                     LocationAddress1=val['LocationAddress1'], LocationAddress2=val['LocationAddress2'], LocationCity=val['LocationCity'],
                     LocationState=val['LocationState'], LocationZip=val['LocationZip'], CompanyCode=val['CompanyCode'])
-                start_id+=1
+
                 session.add(account_i)
         
         elif target=='Product':
@@ -104,7 +108,10 @@ if st.button("Upload", type="primary"):
         elif target=='Customer':
             Customer = Base.classes.Customer
             h = pd.read_sql(sql="select * from Customer", con=db_conn.engine())
+            CodeList = h['CustID'].to_list()
             for i, val in df.iterrows():# df shape
+                if str(val['CustID']) in CodeList:
+                    continue
                 customer_i = Customer(CustID=val['CustID'], CustFirstName=val['CustFirstName'], CustMiddleInitial=val['CustMiddleInitial'],
                     CustLastName=val['CustLastName'], CustSuffix=val['CustSuffix'], CustDOB=val['CustDOB'], Gender=val['Gender'])
                 session.add(customer_i)
@@ -115,7 +122,7 @@ if st.button("Upload", type="primary"):
             h = pd.read_sql(sql="select * from CompanyCode", con=db_conn.engine())
             CodeList = h['CompanyCode'].to_list()
             for i, val in df.iterrows():# df shape
-                if val['CompanyCode'] in CodeList:
+                if str(val['CompanyCode']) in CodeList:
                     continue
                 company_i = CompanyCode(CompanyCode=val['CompanyCode'], CompanyName=val['CompanyName'])
                 session.add(company_i)
@@ -127,7 +134,7 @@ if st.button("Upload", type="primary"):
             pids = []
             pids = h['Id'].to_list()
             for i, val in df.iterrows():# df shape
-                if val['Id'] in pids:
+                if str(val['Id']) in pids:
                     continue
                 credit_i = Credit(Id=val['Id'], Job=val['Job'], Housing=val['Housing'], SavingAccounts=val['Saving accounts'],
                     CheckingAccount=val['Checking account'], CreditAmount=val['Credit amount'],
@@ -140,7 +147,7 @@ if st.button("Upload", type="primary"):
             pids = []
             pids = h['Id'].to_list()
             for i, val in df.iterrows():# df shape
-                if val['Id'] in pids:
+                if str(val['Id']) in pids:
                     continue
                 insurance_i = Insurance(Id=val['Id'], bmi=val['bmi'], children=val['children'], smoker=val['smoker'],
                             region=val['region'], charges=val['charges'])
@@ -152,7 +159,7 @@ if st.button("Upload", type="primary"):
             pids = h['id'].to_list()
             pids = []
             for i, val in df.iterrows():# df shape
-                if val['id'] in pids:
+                if str(val['id']) in pids:
                     continue
                 heart_i = heart(id=val['id'], age=val['age'], sex=val['sex'], dataset=val['dataset'],
                     cp=val['cp'], trestbps=val['trestbps'], chol=val['chol'], fbs=val['fbs'],
@@ -163,6 +170,138 @@ if st.button("Upload", type="primary"):
         session.commit()
         session.close()
         st.markdown("### Upload Succeeded")
+## Upload database on azure
+st.markdown("### Search An Account info")
+
+AccountName = st.text_input("Insert an Account Name", value=None, placeholder="Type a name...")
+if st.button("Search", type='primary'):
+    # produce our own MetaData object
+    metadata = MetaData()
+
+    # we can then produce a set of mappings from this MetaData.
+    Base = automap_base(metadata=metadata)
+
+    # calling prepare() just sets up mapped classes and relationships.
+    Base.prepare(db_conn.engine(), reflect=True)
+
+    session = db_conn.sessionMaker()
+
+
+    Account = Base.classes.Account
+    h = pd.read_sql(sql="select * from Account", con=db_conn.engine())
+    print(h)
+    h = h[h['AccountName']==AccountName]
+    st.dataframe(data=h)
+    
+    session.close()
+    st.markdown("### Search Succeeded")
+    
+st.markdown("### Update An Account info")
+target_update = st.radio("Choose update a column in Account table",
+    ["AccountName", "AccountName2", "LocationAddress1", "LocationAddress2", "LocationCity", "LocationState",
+     "LocationZip"])
+Name = st.text_input("Insert an Account Name for Search", value=None, placeholder="Type a name...")
+NewData = st.text_input("Insert an New Data for Update", value=None, placeholder="Type new data...")
+if st.button("Update", type='primary'):
+    # produce our own MetaData object
+    metadata = MetaData()
+
+    # we can then produce a set of mappings from this MetaData.
+    Base = automap_base(metadata=metadata)
+
+    # calling prepare() just sets up mapped classes and relationships.
+    Base.prepare(db_conn.engine(), reflect=True)
+
+    session = db_conn.sessionMaker()
+
+
+    # Account = Base.classes.Account
+    # query = session.query(Account).where(Account.AccountName==Name)
+    if not NewData or not Name:
+        st.markdown("### Search Failed/New Data is a blank")
+    if target_update=="AccountName":
+        stmt = (
+            select(Account)
+            .where(Account.AccountName == Name)
+        )
+        a = session.scalars(stmt).one()
+        a.AccountName = NewData
+
+    elif target_update=="AccountName2":
+        # query.AccountName2 = NewData
+        # session.add(query)
+        # print(query.AccountName2)
+        stmt = (
+            select(Account)
+            .where(Account.AccountName == Name)
+        )
+        a = session.scalars(stmt).one()
+        a.AccountName2 = NewData
+
+    elif target_update=="LocationAddress1":
+        stmt = (
+            select(Account)
+            .where(Account.AccountName == Name)
+        )
+        a = session.scalars(stmt).one()
+        a.LocationAddress1 = NewData
+        
+        
+    elif target_update=="LocationAddress2":
+        stmt = (
+            select(Account)
+            .where(Account.AccountName == Name)
+        )
+        a = session.scalars(stmt).one()
+        a.LocationAddress2 = NewData
+    elif target_update=="LocationCity":
+        stmt = (
+            select(Account)
+            .where(Account.AccountName == Name)
+        )
+        a = session.scalars(stmt).one()
+        a.LocationCity = NewData
+    elif target_update=="LocationState":
+        stmt = (
+            select(Account)
+            .where(Account.AccountName == Name)
+        )
+        a = session.scalars(stmt).one()
+        a.LocationState = NewData
+    elif target_update=="LocationZip":
+        stmt = (
+            select(Account)
+            .where(Account.AccountName == Name)
+        )
+        a = session.scalars(stmt).one()
+        a.LocationZip = NewData
+        
+    session.commit()
+    session.close()
+    st.markdown("### Update Succeeded")
+    
+AccountName = st.text_input("Insert an AccountName", value=None, placeholder="Type an ID...")
+if st.button("Delete", type='primary'):
+    # produce our own MetaData object
+    metadata = MetaData()
+
+    # we can then produce a set of mappings from this MetaData.
+    Base = automap_base(metadata=metadata)
+
+    # calling prepare() just sets up mapped classes and relationships.
+    Base.prepare(db_conn.engine(), reflect=True)
+
+    session = db_conn.sessionMaker()
+
+    Account = Base.classes.Account
+    query = session.query(Account).where(Account.AccountName==AccountName)
+    query.delete()
+    session.commit()
+    session.close()
+    h = pd.read_sql(sql="select * from Account", con=db_conn.engine())
+    h = h[h['AccountName']==AccountName]
+    st.dataframe(data=h)
+    st.markdown("### Delete Succeeded")
 
 ## ML Model response
 st.markdown("### Prediction heart disease risk")
