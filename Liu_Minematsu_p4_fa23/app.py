@@ -5,7 +5,7 @@ import numpy as np
 import xgboost as xgb
 
 from dotenv import load_dotenv
-from model import *
+from dbms.Liu_Minematsu_p4_fa23.model import *
 load_dotenv()
 
 import os
@@ -14,7 +14,7 @@ from sqlalchemy import select, text
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine, MetaData, Table, Column, ForeignKey
 from sqlalchemy.ext.automap import automap_base
-from ml import MLModel
+from dbms.Liu_Minematsu_p4_fa23.ml import MLModel
 
 mlwrapper = MLModel()
 
